@@ -14,8 +14,10 @@ use OpenTelemetry\SDK\Trace\SpanProcessor\SimpleSpanProcessor;
 use OpenTelemetry\SDK\Trace\TracerProvider;
 use OpenTelemetry\SDK\Common\Time\ClockInterface;
 use OpenTelemetry\Contrib\Jaeger\AgentExporter;
+use OpenTelemetry\SDK\Common\Attribute\Attributes;
 
 use OpenTelemetry\SDK\Trace\SpanExporter\ConsoleSpanExporter;
+use OpenTelemetry\SDK\Resource\ResourceInfo;
 
 class ClockImp implements \OpenTelemetry\SDK\Common\Time\ClockInterface{
     public function now() : int {
@@ -49,7 +51,7 @@ class TesterController extends Controller
         // tracing 
 
         $tempo_protocol = "";
-        $tempo_host = "172.18.0.3";
+        $tempo_host = "172.20.0.4";
         $tempo_port = "6831";
         $tempo_rest = "";
         $endpointUrl = $tempo_protocol . $tempo_host . ":" . $tempo_port . $tempo_rest;
@@ -64,12 +66,15 @@ class TesterController extends Controller
         // );
 
         $exporter = new AgentExporter('Laravel-log-2', $endpointUrl);
-
+        $attributes = \OpenTelemetry\SDK\Common\Attribute\Attributes::create( array( "SERVICE_NAME" => "Laravel-service", "service_name" => "Laravel-service-malo", 'app'=>'test-app' ));
+        $resInfo = \OpenTelemetry\SDK\Resource\ResourceInfo::create($attributes);
         $tracerProvider = new \OpenTelemetry\SDK\Trace\TracerProvider(
             new \OpenTelemetry\SDK\Trace\SpanProcessor\SimpleSpanProcessor(
                 $exporter, 
                 new ClockImp()
-            )
+            ),
+            new \OpenTelemetry\SDK\Trace\Sampler\AlwaysOnSampler(), 
+            $resInfo
         );
         // $tracerProvider =  new TracerProvider(
         //     new SimpleSpanProcessor(
@@ -83,7 +88,7 @@ class TesterController extends Controller
         $context = $span->getContext();
         Log::info('In span');
         Log::info($context->getTraceId());
-
+        Log::info('message with trace-id', ['trace_id'=>$context->getTraceId(), 'span_id' => $context->getSpanId()]);
         $span_scope->detach();
         $span->end();
         $tracerProvider->shutdown();

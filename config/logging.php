@@ -69,13 +69,13 @@ return [
             'formatter_with' => [
                 'labels' => [],
                 'context' => [],
-                'systemName' => env('LOKI_SYSTEM_NAME', null),
+                'systemName' => env('LOKI_SYSTEM_NAME', null ),
                 'extraPrefix' => env('LOKI_EXTRA_PREFIX', ''),
                 'contextPrefix' => env('LOKI_CONTEXT_PREFIX', '')
             ],
             'handler_with'   => [
                 'apiConfig'  => [
-                    'entrypoint'  => env('LOKI_ENTRYPOINT', "http://172.18.0.2:3100"),
+                    'entrypoint'  => env('LOKI_ENTRYPOINT', "http://172.20.0.3:3100"),
                     'context'     => [],
                     'labels'      => [],
                     'client_name' => 'mm-test-app',
