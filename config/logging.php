@@ -51,6 +51,7 @@ return [
     |                    "errorlog", "monolog",
     |                    "custom", "stack"
     |
+    docker ps -qf "name=loki" | xargs -n 1 docker inspect | grep IPAddress
     */
 
     'channels' => [
@@ -74,7 +75,7 @@ return [
             ],
             'handler_with'   => [
                 'apiConfig'  => [
-                    'entrypoint'  => env('LOKI_ENTRYPOINT', "http://172.18.0.3:3100"),
+                    'entrypoint'  => env('LOKI_ENTRYPOINT', "http://172.18.0.2:3100"),
                     'context'     => [],
                     'labels'      => [],
                     'client_name' => 'mm-test-app',
