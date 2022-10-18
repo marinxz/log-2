@@ -6,6 +6,8 @@ use Monolog\Handler\SyslogUdpHandler;
 
 use Itspire\MonologLoki\Handler\LokiHandler;
 use Itspire\MonologLoki\Handler\LokiFormater;
+// use App\Http\Controllers\LokiFormatterWithSeverity;
+
 
 return [
 
@@ -65,7 +67,8 @@ return [
             'driver'         => 'monolog',
             'level'          => env('LOG_LEVEL', 'debug'),
             'handler'        => \Itspire\MonologLoki\Handler\LokiHandler::class,
-            'formatter'      => \Itspire\MonologLoki\Formatter\LokiFormatter::class,
+            // 'formatter'      => \Itspire\MonologLoki\Formatter\LokiFormatter::class,
+            'formatter'      =>  \App\Http\Controllers\LokiFormatterWithSeverity::class,
             'formatter_with' => [
                 'labels' => ['app' => 'test-app-laravel', 'severity' => 'none'],
                 'context' => [],
