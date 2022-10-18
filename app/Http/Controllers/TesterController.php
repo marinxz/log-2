@@ -51,7 +51,7 @@ class TesterController extends Controller
         // tracing 
 
         $tempo_protocol = "";
-        $tempo_host = "172.20.0.4";
+        $tempo_host = "172.21.0.2";
         $tempo_port = "6831";
         $tempo_rest = "";
         $endpointUrl = $tempo_protocol . $tempo_host . ":" . $tempo_port . $tempo_rest;
@@ -81,6 +81,8 @@ class TesterController extends Controller
         //         new ConsoleSpanExporter()
         //     )
         // );
+        // Log::withContext(['severity'=> 'warning']);
+        Log::warning('before span');
 
         $tracer = $tracerProvider->getTracer("Laravel");
         $span = $tracer->spanBuilder('root')->startSpan();
