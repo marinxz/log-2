@@ -66,7 +66,8 @@ class TesterController extends Controller
         // );
 
         $exporter = new AgentExporter('Laravel-log-2', $endpointUrl);
-        $attributes = \OpenTelemetry\SDK\Common\Attribute\Attributes::create( array( "SERVICE_NAME" => "Laravel-service", "service_name" => "Laravel-service-malo", 'app'=>'test-app' ));
+        $attributes = \OpenTelemetry\SDK\Common\Attribute\Attributes::create( 
+            array( 'app'=>'test-app-laravel' ));
         $resInfo = \OpenTelemetry\SDK\Resource\ResourceInfo::create($attributes);
         $tracerProvider = new \OpenTelemetry\SDK\Trace\TracerProvider(
             new \OpenTelemetry\SDK\Trace\SpanProcessor\SimpleSpanProcessor(
