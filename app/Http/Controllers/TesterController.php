@@ -53,8 +53,8 @@ class TesterController extends Controller
 
         $tempo_protocol = "";
         $tempo_host = "172.18.0.2";
-        $tempo_port = "6831";
-        $tempo_rest = "";
+        $tempo_port = "6832";
+        $tempo_rest = "/v1/traces";
         $endpointUrl = $tempo_protocol . $tempo_host . ":" . $tempo_port . $tempo_rest;
         
         Log::info("Endpoint url:" . $endpointUrl);    
