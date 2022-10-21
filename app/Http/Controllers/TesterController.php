@@ -18,6 +18,7 @@ use OpenTelemetry\SDK\Common\Attribute\Attributes;
 
 use OpenTelemetry\SDK\Trace\SpanExporter\ConsoleSpanExporter;
 use OpenTelemetry\SDK\Resource\ResourceInfo;
+use OpenTelemetry\API\Trace\Propagation\TraceContextPropagator;
 
 class ClockImp implements \OpenTelemetry\SDK\Common\Time\ClockInterface{
     public function now() : int {
@@ -51,7 +52,7 @@ class TesterController extends Controller
         // tracing 
 
         $tempo_protocol = "";
-        $tempo_host = "172.21.0.2";
+        $tempo_host = "172.18.0.2";
         $tempo_port = "6831";
         $tempo_rest = "";
         $endpointUrl = $tempo_protocol . $tempo_host . ":" . $tempo_port . $tempo_rest;
@@ -92,6 +93,29 @@ class TesterController extends Controller
         Log::info('In span');
         Log::info($context->getTraceId());
         Log::info('message with trace-id', ['trace_id'=>$context->getTraceId(), 'span_id' => $context->getSpanId()]);
+        // ------------------------------ calling other service -------------------------
+
+        $end_url = $request->get('end_url');
+        error_log("Starting tracing for end url:" . $end_url);
+        Log::info("Starting tracing for end url:" . $end_url, ['trace_id'=>$context->getTraceId(), 'span_id' => $context->getSpanId()]);
+        $propagator = new TraceContextPropagator();
+        $carrier = array();
+        $propagator->inject($carrier); 
+        $trace_id_formated = $carrier['traceparent'];
+        error_log($carrier['traceparent']);
+        
+        $message = 'Requests not completed';
+        
+        $response = Http::withHeaders(['traceparent'=>$trace_id_formated])->get($end_url);
+
+        if( $response->ok() ){
+            error_log($response->body());
+            $message = 'Requests completed, response: ' . $response->body();
+        }
+        else{
+            error_log('Request not ok');
+        }
+
         $span_scope->detach();
         $span->end();
         $tracerProvider->shutdown();

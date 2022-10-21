@@ -11,7 +11,7 @@
                     @csrf <!-- {{ csrf_field() }} -->
                     <h1> Test Laravel tracing</h1>
                     <div class="form-input">
-                        <label>Execution endpoint:</label> <input type="text" name="end_url" value="http://localhost:8080/test2" size="100">
+                        <label>Execution endpoint:</label> <input type="text" name="end_url" value="http://localhost:8080/test3" size="100">
                     </div>
                     <p></p>
                     <button type="submit">Execute</button>

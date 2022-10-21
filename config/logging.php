@@ -78,7 +78,7 @@ return [
             ],
             'handler_with'   => [
                 'apiConfig'  => [
-                    'entrypoint'  => env('LOKI_ENTRYPOINT', "http://172.21.0.3:3100"),
+                    'entrypoint'  => env('LOKI_ENTRYPOINT', "http://172.18.0.4:3100"),
                     'context'     => [],
                     'labels'      => [],
                     'client_name' => 'mm-test-app',

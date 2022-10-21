@@ -18,9 +18,8 @@ class LokiFormatterWithSeverity extends \Itspire\MonologLoki\Formatter\LokiForma
     public function format(array $record): array
     {
         $severity = $record['level_name'] ?? 'not-found';
-        error_log('Severity in format: ' . $severity);    
+        // error_log('Severity in format: ' . $severity);    
         $record = parent::format($record);
-        // return $record;
         return $this->addSeverity($record, $severity);
     }
 
